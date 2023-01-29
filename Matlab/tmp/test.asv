@@ -1,0 +1,36 @@
+clear all
+close all
+clc
+
+%a=degeneracy(2,3)
+
+dietype=6;
+nd=2;
+crit=8;
+numrerolls=2;
+allrolls=[];
+nrolls=dietype^nd
+%     for i=dietype:-1:1
+%         for j=i:-1:1
+%           allrolls(end+1,:)=[i,j];
+%         end
+%     end
+allrolls=[];
+for i=1:dietype
+    allrolls=dieroll(allrolls,i,nd-1);
+end
+
+testrollsum=0;
+alldegen=zeros(length(allrolls),1);
+for tt=1:length(alldegen)
+    alldegen(tt)=degeneracy(allrolls(tt,:),nd);
+    testrollsum=testrollsum+alldegen(tt);
+end
+testrollsum    
+
+allprob=zeros(length(allrolls),1);
+for i=1:length(allrolls)
+  allprob(i)=allsinglerr2(allrolls(i,:),numrerolls,crit,dietype);
+end
+totprob=sum(allprob.*alldegen)/nrolls
+a=1
